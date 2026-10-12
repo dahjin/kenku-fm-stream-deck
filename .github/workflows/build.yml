@@ -1,0 +1,76 @@
+name: Build Stream Deck plugin
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+      - "feature/**"
+    tags:
+      - "v*"
+
+concurrency:
+  group: stream-deck-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Test, validate, and package
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Check release version
+        if: startsWith(github.ref, 'refs/tags/v')
+        run: node scripts/check-version.mjs "$GITHUB_REF_NAME"
+
+      - name: Test and package plugin
+        run: npm run build
+
+      - name: Upload packaged plugin
+        uses: actions/upload-artifact@v4
+        with:
+          name: kenku-fm-stream-deck-${{ github.sha }}
+          path: dist/*.streamDeckPlugin
+          if-no-files-found: error
+          retention-days: 14
+
+  release:
+    name: Publish tagged release
+    if: startsWith(github.ref, 'refs/tags/v')
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Download packaged plugin
+        uses: actions/download-artifact@v4
+        with:
+          name: kenku-fm-stream-deck-${{ github.sha }}
+          path: dist
+
+      - name: Create or update GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if gh release view "$GITHUB_REF_NAME" >/dev/null 2>&1; then
+            gh release upload "$GITHUB_REF_NAME" dist/*.streamDeckPlugin --clobber
+          else
+            gh release create "$GITHUB_REF_NAME" dist/*.streamDeckPlugin \
+              --title "Kenku FM Stream Deck $GITHUB_REF_NAME" \
+              --generate-notes
+          fi

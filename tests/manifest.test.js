@@ -9,6 +9,7 @@ const manifest = JSON.parse(
 );
 
 test("manifest action IDs and property inspectors are complete", () => {
+  assert.equal(manifest.UUID, "fm.kenku.remote");
   const ids = manifest.Actions.map((action) => action.UUID);
   assert.equal(new Set(ids).size, ids.length);
   assert.deepEqual(ids.slice(-3), [
@@ -27,12 +28,15 @@ test("manifest action IDs and property inspectors are complete", () => {
       ...action.States.map((state) => state.Image),
     ]) {
       assert.equal(
-        [".png", ".jpg"].some((extension) =>
+        [".png", ".svg", ".gif"].some((extension) =>
           fs.existsSync(path.join(root, base + extension)),
         ),
         true,
         base,
       );
+    }
+    for (const state of action.States) {
+      assert.equal(typeof state.FontSize, "number");
     }
   }
 });
