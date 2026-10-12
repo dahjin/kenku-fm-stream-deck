@@ -4,6 +4,13 @@
   "private": true,
   "scripts": {
     "test": "node --test tests/*.test.js",
-    "check": "node --check plugin/actions.js && node --check plugin/helpers.js && node --check plugin/model.js && node --check plugin/poll.js && node --check plugin/remote.js && node --check pi/shared.js"
+    "check": "node --check plugin/actions.js && node --check plugin/helpers.js && node --check plugin/model.js && node --check plugin/poll.js && node --check plugin/remote.js && node --check pi/shared.js && node --check scripts/prepare-plugin.mjs && node --check scripts/check-version.mjs",
+    "prepare:plugin": "node scripts/prepare-plugin.mjs",
+    "validate:plugin": "npm run prepare:plugin && streamdeck validate build/fm.kenku.remote.sdPlugin --no-update-check",
+    "package:plugin": "npm run prepare:plugin && streamdeck pack build/fm.kenku.remote.sdPlugin --output dist --force --no-update-check --no-file-list",
+    "build": "npm test && npm run check && npm run package:plugin"
+  },
+  "devDependencies": {
+    "@elgato/cli": "1.10.2"
   }
 }

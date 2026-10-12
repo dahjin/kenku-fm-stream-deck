@@ -2,7 +2,9 @@
 
 # Kenku FM Stream Deck Plugin
 
-[Stream Deck](https://www.elgato.com/en/stream-deck) plugin for [Kenku FM](https://kenku.fm).
+[Stream Deck](https://www.elgato.com/en/stream-deck) plugin for the
+[dahjin/kenku-fm fork](https://github.com/dahjin/kenku-fm), with controls for
+its version 2 Remote API.
 
 <p align="center">
   <img src="./docs/example.png" alt="Kenku FM Stream Deck Plugin" width="738">
@@ -35,17 +37,43 @@ through the selector until a v2 server is available.
 The Remote server has no authentication. Keep it bound to `127.0.0.1` unless
 every device on the network is trusted.
 
+The plugin requires Stream Deck 6.4 or newer.
+
 The upstream plugin documentation is available
 [here](https://www.kenku.fm/docs/using-kenku-remote).
 
 ## Development
 
-Run the dependency-free checks with Node.js:
+Install dependencies and run the same checks and packaging step used by CI:
 
 ```bash
-npm test
-npm run check
+npm ci
+npm run build
 ```
+
+The installer is written to `dist/fm.kenku.remote.streamDeckPlugin`. You can
+also run the individual steps with `npm test`, `npm run check`,
+`npm run validate:plugin`, and `npm run package:plugin`.
+
+## Automated builds
+
+The [plugin build workflow](https://github.com/dahjin/kenku-fm-stream-deck/actions/workflows/build.yml)
+tests, validates, and packages the plugin for pull requests and
+pushes to `main` or `feature/**` branches. The packaged plugin is available from
+the workflow run's **Artifacts** section for 14 days.
+
+Pushing a version tag also creates an entry on the
+[Releases page](https://github.com/dahjin/kenku-fm-stream-deck/releases) and
+attaches the installable `.streamDeckPlugin` file. The tag must match both
+`package.json` and `manifest.json`:
+
+```bash
+git tag v1.1.0
+git push origin v1.1.0
+```
+
+Validation and packaging use Elgato's official Stream Deck CLI with update
+checks disabled for reproducible CI runs.
 
 ## Licence
 
