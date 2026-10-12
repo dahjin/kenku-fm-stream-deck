@@ -38,8 +38,26 @@ function setImage(context, image) {
         image: image,
         target: DestinationEnum.HARDWARE_AND_SOFTWARE,
       },
-    })
+    }),
   );
+}
+
+/** Set the title shown on a Stream Deck action. */
+function setTitle(context, title) {
+  websocket.send(
+    JSON.stringify({
+      event: "setTitle",
+      context,
+      payload: {
+        title: title || "",
+        target: DestinationEnum.HARDWARE_AND_SOFTWARE,
+      },
+    }),
+  );
+}
+
+function showAlert(context) {
+  websocket.send(JSON.stringify({ event: "showAlert", context }));
 }
 
 /**
@@ -66,7 +84,15 @@ function toDataURL(url, callback) {
  * @param {Response} response
  */
 function check(response) {
-  if (!response.ok) throw Error(response.statusText);
+  if (!response.ok) {
+    const error = Error(response.statusText || `HTTP ${response.status}`);
+    error.status = response.status;
+    throw error;
+  }
+}
+
+function apiURL(path, version = "v2") {
+  return `http://${remoteAddress}:${remotePort}/${version}/${path}`;
 }
 
 /**
@@ -78,18 +104,13 @@ function check(response) {
  * @returns {Promise<Response>} The api response
  * @throws {Error} Throws an error when the response is not ok
  */
-async function api(path, method = "GET", body = {}, version = "v1") {
-  const response = await fetch(
-    `http://${remoteAddress}:${remotePort}/${version}/${path}`,
-    {
-      method: method,
-      body: method === "GET" ? undefined : JSON.stringify(body),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    }
-  );
+async function api(path, method = "GET", body, version = "v2") {
+  const hasBody = body !== undefined;
+  const response = await fetch(apiURL(path, version), {
+    method,
+    body: hasBody ? JSON.stringify(body) : undefined,
+    headers: hasBody ? { "Content-Type": "application/json" } : undefined,
+  });
   check(response);
-  const json = await response.json();
-  return json;
+  return response.json();
 }

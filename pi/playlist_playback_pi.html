@@ -1,8 +1,9 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
   <head>
     <title>fm.kenku.remote.playlist-playback.pi</title>
     <meta charset="utf-8" />
+    <script src="shared.js"></script>
     <script src="playlist_playback_pi.js"></script>
     <link rel="stylesheet" href="css/sdpi.css" />
   </head>
@@ -15,6 +16,7 @@
         onchange="sendSettings()"
       >
         <option value="play-pause">Play/Pause</option>
+        <option value="stop">Stop</option>
         <option value="mute">Mute</option>
         <option value="decrease-volume">Decrease Volume</option>
         <option value="increase-volume">Increase Volume</option>
@@ -24,6 +26,7 @@
         <option value="repeat">Repeat</option>
       </select>
     </div>
+    <p id="library-status">Open Kenku FM and enable Remote.</p>
     <details class="sdpi-item-value">
       <summary>Advanced</summary>
       <div class="sdpi-item">

@@ -41,6 +41,48 @@
       "Tooltip": "Plays a sound or soundboard by ID in the Kenku Player app",
       "UUID": "fm.kenku.remote.soundboard-play",
       "PropertyInspectorPath": "pi/soundboard_play_pi.html"
+    },
+    {
+      "Icon": "assets/categoryIcon",
+      "Name": "Activate Scene",
+      "States": [
+        {
+          "Image": "assets/actionPlayImage",
+          "TitleAlignment": "bottom",
+          "FontSize": "14"
+        }
+      ],
+      "Tooltip": "Activate or stop a Kenku FM scene tab",
+      "UUID": "fm.kenku.remote.scene",
+      "PropertyInspectorPath": "pi/scene_pi.html"
+    },
+    {
+      "Icon": "assets/actionPlaylistPlayIcon",
+      "Name": "Toggle Playlist Tag",
+      "States": [
+        {
+          "Image": "assets/actionShuffleOffImage",
+          "TitleAlignment": "bottom",
+          "FontSize": "14"
+        }
+      ],
+      "Tooltip": "Toggle a playlist tag filter in Kenku FM",
+      "UUID": "fm.kenku.remote.playlist-tag",
+      "PropertyInspectorPath": "pi/playlist_tag_pi.html"
+    },
+    {
+      "Icon": "assets/actionSoundboardPlayIcon",
+      "Name": "Toggle Sound Group",
+      "States": [
+        {
+          "Image": "assets/actionSoundboardPlayImage",
+          "TitleAlignment": "bottom",
+          "FontSize": "14"
+        }
+      ],
+      "Tooltip": "Start or stop a Kenku FM random sound group",
+      "UUID": "fm.kenku.remote.sound-group",
+      "PropertyInspectorPath": "pi/sound_group_pi.html"
     }
   ],
   "Category": "Kenku FM",
@@ -48,11 +90,11 @@
   "SDKVersion": 2,
   "Author": "Kenku FM",
   "CodePath": "plugin/remote.html",
-  "Description": "Stream Deck plugin for Kenku FM",
+  "Description": "Control Kenku FM playlists, scenes, tags, sounds, and random groups",
   "Name": "Kenku FM",
   "Icon": "assets/pluginIcon",
-  "URL": "https://www.kenku.fm/",
-  "Version": "1.0.0",
+  "URL": "https://github.com/dahjin/kenku-fm-stream-deck",
+  "Version": "1.1.0",
   "OS": [
     {
       "Platform": "mac",

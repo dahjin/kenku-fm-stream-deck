@@ -1,22 +1,23 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
   <head>
     <title>fm.kenku.remote.playlist-play.pi</title>
     <meta charset="utf-8" />
+    <script src="shared.js"></script>
     <script src="playlist_play_pi.js"></script>
     <link rel="stylesheet" href="css/sdpi.css" />
   </head>
   <body>
     <div class="sdpi-item">
-      <div class="sdpi-item-label">Track ID</div>
-      <input
+      <div class="sdpi-item-label">Playlist / Track</div>
+      <select
         class="sdpi-item-value"
-        type="text"
         id="id"
         required
-        oninput="sendSettings()"
-      />
+        onchange="sendSettings()"
+      ></select>
     </div>
+    <p id="library-status">Open Kenku FM and enable Remote.</p>
     <details class="sdpi-item-value">
       <summary>Advanced</summary>
       <div class="sdpi-item">

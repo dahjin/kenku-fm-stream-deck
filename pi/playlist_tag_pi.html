@@ -1,0 +1,53 @@
+<!doctype html>
+<html>
+  <head>
+    <title>fm.kenku.remote.playlist-tag.pi</title>
+    <meta charset="utf-8" />
+    <script src="shared.js"></script>
+    <script src="playlist_tag_pi.js"></script>
+    <link rel="stylesheet" href="css/sdpi.css" />
+  </head>
+  <body>
+    <div class="sdpi-item">
+      <div class="sdpi-item-label">Playlist</div>
+      <select
+        class="sdpi-item-value"
+        id="playlist"
+        onchange="playlistChanged()"
+      ></select>
+    </div>
+    <div class="sdpi-item">
+      <div class="sdpi-item-label">Tag</div>
+      <select
+        class="sdpi-item-value"
+        id="tag"
+        onchange="sendSettings()"
+      ></select>
+    </div>
+    <p id="library-status">Open Kenku FM and enable Remote.</p>
+    <details class="sdpi-item-value">
+      <summary>Advanced</summary>
+      <div class="sdpi-item">
+        <div class="sdpi-item-label">Address</div>
+        <input
+          class="sdpi-item-value"
+          id="address"
+          value="127.0.0.1"
+          required
+          oninput="sendGlobalSettings()"
+        />
+      </div>
+      <div class="sdpi-item">
+        <div class="sdpi-item-label">Port</div>
+        <input
+          class="sdpi-item-value"
+          id="port"
+          value="3333"
+          required
+          pattern="\d+"
+          oninput="sendGlobalSettings()"
+        />
+      </div>
+    </details>
+  </body>
+</html>
