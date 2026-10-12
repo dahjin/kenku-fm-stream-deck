@@ -2,7 +2,9 @@
 
 # Kenku FM Stream Deck Plugin
 
-[Stream Deck](https://www.elgato.com/en/stream-deck) plugin for [Kenku FM](https://kenku.fm).
+[Stream Deck](https://www.elgato.com/en/stream-deck) plugin for the
+[dahjin/kenku-fm fork](https://github.com/dahjin/kenku-fm), with controls for
+its version 2 Remote API.
 
 <p align="center">
   <img src="./docs/example.png" alt="Kenku FM Stream Deck Plugin" width="738">
@@ -55,13 +57,15 @@ also run the individual steps with `npm test`, `npm run check`,
 
 ## Automated builds
 
-GitHub Actions tests, validates, and packages the plugin for pull requests and
+The [plugin build workflow](https://github.com/dahjin/kenku-fm-stream-deck/actions/workflows/build.yml)
+tests, validates, and packages the plugin for pull requests and
 pushes to `main` or `feature/**` branches. The packaged plugin is available from
 the workflow run's **Artifacts** section for 14 days.
 
-Pushing a version tag also creates a GitHub Release and attaches the installable
-`.streamDeckPlugin` file. The tag must match both `package.json` and
-`manifest.json`:
+Pushing a version tag also creates an entry on the
+[Releases page](https://github.com/dahjin/kenku-fm-stream-deck/releases) and
+attaches the installable `.streamDeckPlugin` file. The tag must match both
+`package.json` and `manifest.json`:
 
 ```bash
 git tag v1.1.0
