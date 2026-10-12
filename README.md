@@ -12,6 +12,9 @@ its version 2 Remote API.
 
 ## Docs
 
+Installation, action, compatibility, build, and troubleshooting guides are in
+this fork's [GitHub Wiki](https://github.com/dahjin/kenku-fm-stream-deck/wiki).
+
 This fork supports the version 2 Remote API added to
 [dahjin/kenku-fm](https://github.com/dahjin/kenku-fm). Start Remote under
 **Kenku FM > Settings > Remote** before using the plugin. The default address is
