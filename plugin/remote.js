@@ -21,22 +21,47 @@ function connectElgatoStreamDeckSocket(inPort, inPluginUUID, inRegisterEvent) {
       JSON.stringify({
         event: inRegisterEvent,
         uuid: inPluginUUID,
-      })
+      }),
     );
     websocket.send(
       JSON.stringify({
         event: "getGlobalSettings",
         context: inPluginUUID,
-      })
+      }),
     );
-    startPlaybackPolling();
+    startPlaybackMonitoring();
   };
 
-  websocket.onmessage = function (evt) {
+  websocket.onmessage = async function (evt) {
     const jsonObj = JSON.parse(evt.data);
     const { action, event, payload, context } = jsonObj;
 
-    if (events.includes(event)) {
+    if (event === "sendToPlugin" && payload?.request === "library") {
+      try {
+        if (remoteApiVersion !== 2) {
+          const library = await api("library");
+          remoteApiVersion = 2;
+          updateLibrary(library);
+        }
+        websocket.send(
+          JSON.stringify({
+            action,
+            event: "sendToPropertyInspector",
+            context,
+            payload: { library: remoteLibrary, apiVersion: remoteApiVersion },
+          }),
+        );
+      } catch (error) {
+        websocket.send(
+          JSON.stringify({
+            action,
+            event: "sendToPropertyInspector",
+            context,
+            payload: { error: error.message, apiVersion: remoteApiVersion },
+          }),
+        );
+      }
+    } else if (events.includes(event)) {
       const { settings } = payload;
       // Convert event to handler string e.g. `keyDown` to `onKeyDown`
       const handler = `on${event.charAt(0).toUpperCase()}${event.slice(1)}`;
@@ -61,11 +86,12 @@ function connectElgatoStreamDeckSocket(inPort, inPluginUUID, inRegisterEvent) {
               address: remoteAddress,
               port: remotePort,
             },
-          })
+          }),
         );
       } else {
-        remoteAddress = settings.address;
-        remotePort = settings.port;
+        remoteAddress = settings.address || remoteAddress;
+        remotePort = settings.port || remotePort;
+        startPlaybackMonitoring();
       }
     }
   };
